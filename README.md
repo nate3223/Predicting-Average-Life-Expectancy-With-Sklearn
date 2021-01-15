@@ -13,6 +13,9 @@ Since the models that we are using to predict data cannot handle incomplete data
 The data stored in the columns can have very large numbers, this can cause computational problems when calculating the distance between two points of data in the future, as larger numbers will take longer to compute. If we were to make the numbers smaller, we would still be able to predict new data point with the same level of accuracy as the prediction will be in proportion to the other values, as well as saving the amount of time it takes to compute the distance between two points. Therefore, the training and test values are then normalised to have a mean and unit variance of 0. We are also able to get the mean and variance of each column in this step, so we are able to save it for the output csv file later on.  
 
 ## Outcome of Results
+<p align="center">
+  <img src="results1.png">
+</p>
 Now that the data is pre-processed, the models can be trained. As a result, the accuracy of the decision tree was 0.709, the accuracy of the k-nn model with a k value of 3 was 0.673, and the accuracy of the k-nn model with a k value of 7 was 0.727. Thus, you can conclude the k-nn algorithm with a k value of 7 outperforms the decision tree, however the decision tree outperforms the k-nn algorithm was a k value of 3. Therefore, it appears that k-nn algorithms outperform decision trees for a sufficient value of k, however, decision trees are much faster computationally than k-nn algorithms.
 
 The results claim that increasing the number of neighbours that you check when using the k-nn algorithm will increase the accuracy of your predictions. This could be because when you check a small amount of neighbours for each data point, one outlier will make a much more significant impact on the predicted value than if you had a large amount of neighbours. Since we are using a small dataset, it is very likely that there would be some noticeable outliers which would have this issue. We could potentially solve this problem by increasing the size of the dataset, however, since there are a small number of countries in the world, you cannot increase the sample size by much. You could make sure “life.csv” has a row for every country, or you can include rows from other years to increase the sample size.
@@ -29,12 +32,18 @@ The new column is created by multiplying the two columns together, generating 19
 Next, it will generate the clustering label to be used as a feature alongside with the interaction term pairs. In order to determine the number of clusters used, I used the elbow method. The elbow method essentially takes a graph which plots the number of clusters vs the sum of squared distances, as shown to the left. The optimal k value for this graph occurs when the slope between two points starts to fall off, which in this case, is when k is 5. Thus, the number of clusters chosen is 5.
 
 ## Choosing the Best 4 Features
+<p align="center">
+  <img src="elbow.png">
+</p>
 Now that we have a total of 211 features, we want to find the best 4 features that will provide the most accurate predictions. I decided to use sklearn’s mutual information algorithm to give each feature a mutual information value, and then selected the 4 features with the highest values. This is because mutual information measures the correlation between two sets of data. If a feature has a high value for mutual information, it means that the feature is highly correlated with the set of data. Therefore, by selecting the top 4 highest values, it is likely to give us the highest accuracy possible with only 4 of the features.
 
 ## Feature Engineering and Selection via PCA
 This step is very simple. It takes the training and test data from the task 2a and uses sklearn’s PCA algorithm with n_components set to 4. The PCA algorithm aims to reduce the size of a set of data, while still maintaining as much information about the original dataset as possible. It does this by generating a set of new, uncorrelated values, which causes the new dataset to have a much higher variance.
 
 ## Outcome of Results
+<p align="center">
+  <img src="results2.png">
+</p>
 Now that 3 different sets of data have been created, we can use the data to train 3 separate k-nn models with a k value of 3, and measure the accuracy. Overall, using a random_state of 139, it was found that the PCA method resulted in the highest accuracy (0.836), and using the first four features resulted in the lowest accuracy (0.709). It is no surprise that the first four features scored the lowest as there was no reason why these four features were selected other than because they were the first four. 
 
 It is interesting that PCA scored much higher than the feature engineering, as PCA tends to trade a smaller set of data for a lower amount of accuracy. The feature engineering method attempted to create a bunch of extra features, and take the top 4 most correlated features, however it didn’t perform nearly as well. The accuracy values for both of them are good enough to make an assumption, however is not accurate enough to be certain of a prediction.
